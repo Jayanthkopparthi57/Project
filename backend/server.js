@@ -1,12 +1,14 @@
-import express from "express";
-import dotenv from "dotenv";
-import cors from "cors";
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const path = require("path");
 
-import connectDB from "./db.js";
+const connectDB = require("./db.js");
 
-import userRoutes from "./routers/user.js";
-import doctorRoutes from "./routers/doctor.js";
-import appointmentRoutes from "./routers/appointments.js";
+const userRoutes = require("./routers/user.js");
+const doctorRoutes = require("./routers/doctor.js");
+const appointmentRoutes = require("./routers/appointments.js");
+const documentRoutes = require("./routers/documents.js");
 
 dotenv.config();
 
@@ -14,12 +16,19 @@ const app = express();
 
 connectDB();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    credentials: true,
+  })
+);
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/users", userRoutes);
+app.use("/patients", userRoutes);
 app.use("/doctors", doctorRoutes);
-app.use("/appoinments", appointmentRoutes);
+app.use("/appointments", appointmentRoutes);
+app.use("/documents", documentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Doctor Appointment Booking API");

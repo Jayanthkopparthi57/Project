@@ -1,7 +1,7 @@
-import express from "express";
-import Appointment from "../models/Appointments.js";
-import Doctor from "../models/Doctor.js";
-import User from "../models/User.js";
+const express = require("express");
+const Appointment = require("../models/Appointments.js");
+const Doctor = require("../models/Doctor.js");
+const User = require("../models/User.js");
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.post("/book", async (req, res) => {
     });
 
     if (existingAppointment) {
-      return res.status(400).json({ message: "Appointment slot already booked" });
+      return res.status(400).json({ message: "Appointment request cancelled because this doctor is already booked for this time" });
     }
 
     const appointment = new Appointment({
@@ -123,4 +123,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;
