@@ -66,7 +66,9 @@ router.get("/doctor/:doctorId", async (req, res) => {
   try {
     const appointments = await Appointment.find({
       doctor: req.params.doctorId
-    }).populate("patient", "fullName phone");
+    })
+      .populate("patient", "fullName email phone age gender")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(appointments);
   } catch (error) {
@@ -78,7 +80,9 @@ router.get("/patient/:patientId", async (req, res) => {
   try {
     const appointments = await Appointment.find({
       patient: req.params.patientId
-    }).populate("doctor", "fullName specialization");
+    })
+      .populate("doctor", "fullName specialization")
+      .sort({ createdAt: -1 });
 
     res.status(200).json(appointments);
   } catch (error) {

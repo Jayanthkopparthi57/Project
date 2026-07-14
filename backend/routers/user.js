@@ -84,4 +84,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id).select("-password -__v");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user", error: error.message });
+  }
+});
+
 module.exports = router;

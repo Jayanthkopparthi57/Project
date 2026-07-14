@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const Document = require("../models/Document.js");
+const Appointment = require("../models/Appointments.js");
 
 const router = express.Router();
 const uploadDir = path.join(__dirname, "..", "uploads");
@@ -59,6 +60,20 @@ router.post("/upload", upload.single("document"), async (req, res) => {
 router.get("/user/:userId", async (req, res) => {
   try {
     const documents = await Document.find({ user: req.params.userId }).sort({ createdAt: -1 });
+    res.status(200).json(documents);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching documents", error: error.message });
+  }
+});
+
+router.get("/doctor/:doctorId", async (req, res) => {
+  try {
+    const appointments = await Appointment.find({ doctor: req.params.doctorId }).select("patient");
+    const patientIds = [...new Set(appointments.map((appointment) => appointment.patient.toString()))];
+    const documents = await Document.find({ user: { $in: patientIds } })
+      .populate("user", "fullName email phone age gender")
+      .sort({ createdAt: -1 });
+
     res.status(200).json(documents);
   } catch (error) {
     res.status(500).json({ message: "Error fetching documents", error: error.message });

@@ -43,7 +43,7 @@ const SignUp = () => {
       };
       localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
       setMessage(res.data.message);
-      navigate("/profile");
+      navigate("/login");
     } catch (error) {
       setMessage(error.response?.data?.message || "Patient registration failed");
     }
@@ -60,7 +60,7 @@ const SignUp = () => {
       };
       localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
       setMessage(res.data.message);
-      navigate("/profile");
+      navigate("/login");
     } catch (error) {
       setMessage(error.response?.data?.message || "Doctor registration failed");
     }

@@ -13,6 +13,7 @@ import Appointments from './pages/Appointments'
 import Notifications from './pages/Notifications'
 import Profile from './pages/Profile'
 import DoctorDetails from './pages/DoctorDetails'
+import PatientProfile from './pages/PatientProfile'
 const App = () => {
   return (
     <div>
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='/Documents' element={<Documents/>}/>
           <Route path='/notifications' element={<Notifications/>}/>
           <Route path='/profile' element={<Profile/>}/>
+          <Route path='/patients/:id' element={<PatientProfile/>}/>
         </Routes>
         <Footer/>
       </Router>
